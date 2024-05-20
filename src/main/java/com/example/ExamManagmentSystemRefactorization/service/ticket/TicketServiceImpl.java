@@ -2,17 +2,23 @@ package com.example.ExamManagmentSystemRefactorization.service.ticket;
 
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.newticket.NewTicketRequestDto;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.newticket.NewTicketResponseDto;
+import com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforregion.RegionTicketResponseDto;
+import com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforuser.UserTicketResponseDto;
 import com.example.ExamManagmentSystemRefactorization.entity.Center;
 import com.example.ExamManagmentSystemRefactorization.entity.Exam;
 import com.example.ExamManagmentSystemRefactorization.entity.Region;
 import com.example.ExamManagmentSystemRefactorization.entity.Ticket;
+import com.example.ExamManagmentSystemRefactorization.entity.User;
 import com.example.ExamManagmentSystemRefactorization.mapper.ticket.TicketMapper;
 import com.example.ExamManagmentSystemRefactorization.repository.TicketRepository;
 import com.example.ExamManagmentSystemRefactorization.service.center.CenterService;
 import com.example.ExamManagmentSystemRefactorization.service.exam.ExamService;
 import com.example.ExamManagmentSystemRefactorization.service.region.RegionService;
+import com.example.ExamManagmentSystemRefactorization.service.user.UserService;
 import com.example.ExamManagmentSystemRefactorization.service.utis.UtisService;
 import com.example.ExamManagmentSystemRefactorization.util.region.RegionResourceChecker;
+import com.example.ExamManagmentSystemRefactorization.util.user.UserResourceChecker;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -26,7 +32,9 @@ public class TicketServiceImpl implements TicketService{
     private final CenterService centerService;
     private final ExamService examService;
     private final UtisService utisService;
+    private final UserService userService;
     private final RegionResourceChecker regionResourceChecker;
+    private final UserResourceChecker userResourceChecker;
     @Override
     public NewTicketResponseDto addNewTicket(Long regionid, NewTicketRequestDto newTicketRequestDto){
         Region exsitingRegion = regionService.findRegionById(regionid);
@@ -77,6 +85,21 @@ public class TicketServiceImpl implements TicketService{
         newTicketInstance.setPhone(newTicketRequestDto.getPhone());
         newTicketInstance.setUtis(utisService.generateUniqueUtis(exsitingRegion,7));
         return newTicketInstance;
+    }
+
+
+
+    @Override
+    public List<RegionTicketResponseDto> getListOfRegionTickets(Long regionid){
+        Region existingRegion = regionService.findRegionById(regionid);
+        regionResourceChecker.ifRegionDoesnotExistThrowException(existingRegion);
+        return ticketMapper.mapToListRegionTicketResponseDto(existingRegion.getTickets());
+    }
+    @Override
+    public List<UserTicketResponseDto> getListOfUserTickets(Long userid){
+        User existingUser = userService.findUserById(userid);
+        userResourceChecker.ifUserDoesnotExistThrowException(existingUser);
+        return ticketMapper.mapToListUserTicketResponseDto(ticketRepository.findByRegion_User_Id(userid));
     }
 
 }
