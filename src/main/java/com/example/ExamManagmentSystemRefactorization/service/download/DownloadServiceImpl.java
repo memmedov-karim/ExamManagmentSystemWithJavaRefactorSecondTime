@@ -3,12 +3,10 @@ package com.example.ExamManagmentSystemRefactorization.service.download;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforregion.RegionTicketResponseDto;
 import com.example.ExamManagmentSystemRefactorization.entity.Region;
 import com.example.ExamManagmentSystemRefactorization.exception.CsvFileGenerationException;
-import com.example.ExamManagmentSystemRefactorization.exception.base.FileGenerationException;
 import com.example.ExamManagmentSystemRefactorization.service.region.RegionService;
 import com.example.ExamManagmentSystemRefactorization.service.ticket.TicketService;
 import com.example.ExamManagmentSystemRefactorization.util.region.RegionResourceChecker;
 import com.opencsv.CSVWriter;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,7 +25,7 @@ public class DownloadServiceImpl implements DownloadService{
     @Override
     public InputStreamResource downloadRegionTicketsAsCSV(Long regionid){
         Region existingRegion = regionService.findRegionById(regionid);
-        regionResourceChecker.ifRegionDoesnotExistThrowException(existingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionDoesnotExist(existingRegion);
         List<RegionTicketResponseDto> regionTickets = ticketService.getListOfRegionTickets(regionid);
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              CSVWriter writer = new CSVWriter(new OutputStreamWriter(outputStream))) {

@@ -7,18 +7,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RegionResourceChecker {
-    public void ifRegionDoesnotExistThrowException(Region region){
+    public void ThrowExceptionIfRegionDoesnotExist(Region region){
         if(region==null){
             throw new RegionNotFoundException();
         }
     }
-    public void ifRegionAlreadyExistThrowException(Region region){
+    public void ThrowExceptionIfRegionAlreadyExist(Region region){
         if(region!=null){
             throw new RegionAlreadyExistException(region.getUsername());
         }
     }
 
-    public void isRegionPasswordIsNotCorrectThrowException(String regionloginpassword,String regionrealpassword){
+    public void ThrowExceptionIfRegionPasswordIsNotCorrect(String regionloginpassword,String regionrealpassword){
         if(!regionloginpassword.equals(regionrealpassword)){
             throw  new PasswordIsNotCorrectException();
         }

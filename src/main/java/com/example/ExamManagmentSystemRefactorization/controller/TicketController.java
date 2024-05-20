@@ -1,6 +1,7 @@
 package com.example.ExamManagmentSystemRefactorization.controller;
 
 import com.example.ExamManagmentSystemRefactorization.annotation.TokenParam;
+import com.example.ExamManagmentSystemRefactorization.constant.ConstantVariable;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.newticket.NewTicketRequestDto;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.newticket.NewTicketResponseDto;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforregion.RegionTicketResponseDto;
@@ -28,12 +29,12 @@ public class TicketController {
     }
 
     @GetMapping("region")
-    public ResponseEntity<List<RegionTicketResponseDto>> getListOfRegionTickets(@TokenParam("tokenR") Long regionid){
+    public ResponseEntity<List<RegionTicketResponseDto>> getListOfRegionTickets(@TokenParam(ConstantVariable.TokenNames.REGIONTOKENNAME) Long regionid){
         return ResponseEntity.ok().body(ticketService.getListOfRegionTickets(regionid));
     }
 
     @GetMapping("user")
-    public ResponseEntity<List<UserTicketResponseDto>> getListOfUserTickets(@TokenParam("tokenU") Long userid){
+    public ResponseEntity<List<UserTicketResponseDto>> getListOfUserTickets(@TokenParam(ConstantVariable.TokenNames.USERTOKENNAME) Long userid){
         return ResponseEntity.ok().body(ticketService.getListOfUserTickets(userid));
     }
 }

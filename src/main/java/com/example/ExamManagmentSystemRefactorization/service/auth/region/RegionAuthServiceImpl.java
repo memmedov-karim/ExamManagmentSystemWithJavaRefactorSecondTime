@@ -19,7 +19,7 @@ public class RegionAuthServiceImpl implements RegionAuthService{
     @Override
     public String loginRegion(RegionLoginRequestDto regionLoginRequestDto, HttpServletResponse response){
         Region existingRegion = regionService.findByUsername(regionLoginRequestDto.getUsername());
-        regionResourceChecker.isRegionPasswordIsNotCorrectThrowException(regionLoginRequestDto.getPassword(), existingRegion.getPassword());
+        regionResourceChecker.ThrowExceptionIfRegionPasswordIsNotCorrect(regionLoginRequestDto.getPassword(), existingRegion.getPassword());
         jwtService.sendTokenWithCookie(existingRegion.getId(),"tokenR",response);
         return "Success login";
 

@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ExamResourceChecker {
-    public void ifExamDoesnotExistThrowException(Exam exam){
+    public void ThrowExceptionIfExamDoesnotExist(Exam exam){
         if(exam==null){
             throw new ExamNotFoundException();
         }
     }
-    public void ifExamAlreadyExistThrowException(Exam exam){
+    public void ThrowExceptionIfExamAlreadyExist(Exam exam){
         if(exam!=null){
             throw new ExamAlreadyExistException(exam.getName());
         }
