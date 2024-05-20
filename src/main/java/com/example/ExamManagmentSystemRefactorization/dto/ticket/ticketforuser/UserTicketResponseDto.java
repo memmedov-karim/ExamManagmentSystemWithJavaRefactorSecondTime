@@ -1,5 +1,6 @@
-package com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforregion;
+package com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforuser;
 
+import com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforregion.RegionTicketResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class RegionTicketResponseDto {
-    private Long id;
+public class UserTicketResponseDto {
+    private Long userid;
     private Long regionid;
     private Long examid;
     private String examname;

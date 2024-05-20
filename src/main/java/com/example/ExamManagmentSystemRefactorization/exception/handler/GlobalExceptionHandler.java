@@ -4,6 +4,7 @@ import com.example.ExamManagmentSystemRefactorization.dto.error.ErrorGeneralResp
 import com.example.ExamManagmentSystemRefactorization.exception.CookieNotFoundException;
 import com.example.ExamManagmentSystemRefactorization.exception.TokenNotFoundException;
 import com.example.ExamManagmentSystemRefactorization.exception.base.AlreadyExsistException;
+import com.example.ExamManagmentSystemRefactorization.exception.base.FileGenerationException;
 import com.example.ExamManagmentSystemRefactorization.exception.base.IsNotCorrectException;
 import com.example.ExamManagmentSystemRefactorization.exception.base.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,14 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
                 .collect(Collectors.joining(", "));
         ErrorGeneralResponse egr = new ErrorGeneralResponse();
         egr.setMessage(message);
+        egr.setStatus(HttpStatus.BAD_REQUEST.value());
+        egr.setTimestamp(LocalDateTime.now());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(egr);
+    }
+    @ExceptionHandler(FileGenerationException.class)
+    public ResponseEntity<ErrorGeneralResponse> handleFileGenerationException(FileGenerationException ex) {
+        ErrorGeneralResponse egr = new ErrorGeneralResponse();
+        egr.setMessage(ex.getMessage());
         egr.setStatus(HttpStatus.BAD_REQUEST.value());
         egr.setTimestamp(LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(egr);
