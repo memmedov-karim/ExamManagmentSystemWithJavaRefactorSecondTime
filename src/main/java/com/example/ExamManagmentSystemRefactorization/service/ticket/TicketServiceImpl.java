@@ -1,5 +1,6 @@
 package com.example.ExamManagmentSystemRefactorization.service.ticket;
 
+import com.example.ExamManagmentSystemRefactorization.constant.ConstantVariable;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.newticket.NewTicketRequestDto;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.newticket.NewTicketResponseDto;
 import com.example.ExamManagmentSystemRefactorization.dto.ticket.ticketforregion.RegionTicketResponseDto;
@@ -20,14 +21,12 @@ import com.example.ExamManagmentSystemRefactorization.util.region.RegionResource
 import com.example.ExamManagmentSystemRefactorization.util.user.UserResourceChecker;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService{
     private final TicketRepository ticketRepository;
-    private final TicketMapper ticketMapper;
     private final RegionService regionService;
     private final CenterService centerService;
     private final ExamService examService;
@@ -35,10 +34,11 @@ public class TicketServiceImpl implements TicketService{
     private final UserService userService;
     private final RegionResourceChecker regionResourceChecker;
     private final UserResourceChecker userResourceChecker;
+    private final TicketMapper ticketMapper;
     @Override
     public NewTicketResponseDto addNewTicket(Long regionid, NewTicketRequestDto newTicketRequestDto){
         Region exsitingRegion = regionService.findRegionById(regionid);
-        regionResourceChecker.ifRegionDoesnotExistThrowException(exsitingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionDoesnotExist(exsitingRegion);
         Long centerid = newTicketRequestDto.getCenter_id();
         Center existingCenter = centerService.findCenterById(centerid);
         Long examid = newTicketRequestDto.getExam_id();
@@ -83,7 +83,7 @@ public class TicketServiceImpl implements TicketService{
         newTicketInstance.setRoom(newTicketRequestDto.getRoom());
         newTicketInstance.setPlace(newTicketRequestDto.getPlace());
         newTicketInstance.setPhone(newTicketRequestDto.getPhone());
-        newTicketInstance.setUtis(utisService.generateUniqueUtis(exsitingRegion,7));
+        newTicketInstance.setUtis(utisService.generateUniqueUtis(exsitingRegion, ConstantVariable.Numbers.UTISLENGTH));
         return newTicketInstance;
     }
 
@@ -92,7 +92,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public List<RegionTicketResponseDto> getListOfRegionTickets(Long regionid){
         Region existingRegion = regionService.findRegionById(regionid);
-        regionResourceChecker.ifRegionDoesnotExistThrowException(existingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionDoesnotExist(existingRegion);
         return ticketMapper.mapToListRegionTicketResponseDto(existingRegion.getTickets());
     }
     @Override

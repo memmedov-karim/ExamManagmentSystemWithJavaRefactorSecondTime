@@ -1,6 +1,7 @@
 package com.example.ExamManagmentSystemRefactorization.controller;
 
 import com.example.ExamManagmentSystemRefactorization.annotation.TokenParam;
+import com.example.ExamManagmentSystemRefactorization.constant.ConstantVariable;
 import com.example.ExamManagmentSystemRefactorization.dto.GeneralSuccessResponseDto;
 import com.example.ExamManagmentSystemRefactorization.dto.center.newcenter.NewCenterRequestDto;
 import com.example.ExamManagmentSystemRefactorization.dto.center.newcenter.NewCenterResponseDto;
@@ -24,7 +25,7 @@ public class CenterController {
     private final CenterService centerService;
 
     @PostMapping("add")
-    public ResponseEntity<GeneralSuccessResponseDto<NewCenterResponseDto>> addNewCenter(@TokenParam("tokenR") Long regionid, @Valid @RequestBody NewCenterRequestDto newCenterRequestDto){
+    public ResponseEntity<GeneralSuccessResponseDto<NewCenterResponseDto>> addNewCenter(@TokenParam(ConstantVariable.TokenNames.REGIONTOKENNAME) Long regionid, @Valid @RequestBody NewCenterRequestDto newCenterRequestDto){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(GeneralSuccessResponseDto
@@ -35,7 +36,7 @@ public class CenterController {
         );
     }
     @GetMapping
-    public ResponseEntity<GeneralSuccessResponseDto<List<CenterForRegionDto>>> getListOfCenterForRegion(@TokenParam("tokenR") Long regionid){
+    public ResponseEntity<GeneralSuccessResponseDto<List<CenterForRegionDto>>> getListOfCenterForRegion(@TokenParam(ConstantVariable.TokenNames.REGIONTOKENNAME) Long regionid){
         return ResponseEntity
                 .ok()
                 .body(GeneralSuccessResponseDto

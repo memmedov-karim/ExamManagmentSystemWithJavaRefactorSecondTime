@@ -27,7 +27,7 @@ public class CenterServiceImpl implements CenterService{
     @Override
     public NewCenterResponseDto addNewCenter(Long regionid,NewCenterRequestDto newCenterRequestDto){
         Region existingRegion = regionService.findRegionById(regionid);
-        regionResourceChecker.ifRegionDoesnotExistThrowException(existingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionDoesnotExist(existingRegion);
         Center exsitingCenter = findexistingcenterByName(existingRegion.getCenters(), newCenterRequestDto.getName());
         centerResourcesChecker.throwExceptionIfCenterAlreadyExist(exsitingCenter);
         Center newCenterInstance = new Center();
@@ -47,7 +47,7 @@ public class CenterServiceImpl implements CenterService{
     @Override
     public List<CenterForRegionDto> getListOfCenterForRegion(Long regionid){
         Region existingRegion = regionService.findRegionById(regionid);
-        regionResourceChecker.ifRegionDoesnotExistThrowException(existingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionDoesnotExist(existingRegion);
         return centerMapper.mapToListOfCenterForRegionDto(existingRegion.getCenters());
     }
     @Override

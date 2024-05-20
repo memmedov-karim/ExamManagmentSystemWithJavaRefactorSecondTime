@@ -1,5 +1,6 @@
 package com.example.ExamManagmentSystemRefactorization.entity;
 
+import com.example.ExamManagmentSystemRefactorization.constant.ConstantVariable;
 import com.example.ExamManagmentSystemRefactorization.util.common.PasswordGenerator;
 import jakarta.persistence.*;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Region extends Base {
     private String password;
     @PrePersist
     public void generatePassword() {
-        this.password = PasswordGenerator.generateRandomPassword(8);
+        this.password = PasswordGenerator.generateRandomPassword(ConstantVariable.Numbers.REGIONPASSWORDLENGTH);
     }
     @ManyToOne
     @JoinColumn(name = "user_id",nullable = false)

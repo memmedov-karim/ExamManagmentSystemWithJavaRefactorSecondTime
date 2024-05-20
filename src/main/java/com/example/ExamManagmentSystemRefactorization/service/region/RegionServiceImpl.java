@@ -6,13 +6,10 @@ import com.example.ExamManagmentSystemRefactorization.dto.region.userregion.Regi
 import com.example.ExamManagmentSystemRefactorization.entity.Region;
 import com.example.ExamManagmentSystemRefactorization.entity.User;
 import com.example.ExamManagmentSystemRefactorization.exception.RegionNotFoundException;
-import com.example.ExamManagmentSystemRefactorization.exception.UserNotFoundException;
 import com.example.ExamManagmentSystemRefactorization.mapper.RegionMapper;
 import com.example.ExamManagmentSystemRefactorization.repository.RegionRepository;
-import com.example.ExamManagmentSystemRefactorization.repository.UserRepository;
 import com.example.ExamManagmentSystemRefactorization.service.user.UserService;
 import com.example.ExamManagmentSystemRefactorization.util.region.RegionResourceChecker;
-import com.example.ExamManagmentSystemRefactorization.util.user.UserResourceChecker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +20,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegionServiceImpl implements RegionService{
     private final RegionRepository regionRepository;
-    private final UserResourceChecker userResourceChecker; 
     private final RegionResourceChecker regionResourceChecker;
     private final RegionMapper regionMapper;
     private final UserService userService;
@@ -32,7 +28,7 @@ public class RegionServiceImpl implements RegionService{
         User user = userService.findUserById(userid);
         String username = newRegionRequestDto.getUsername();
         Region existingRegion = regionRepository.findByUsernameAndUser(username,user);
-        regionResourceChecker.ifRegionAlreadyExistThrowException(existingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionAlreadyExist(existingRegion);
         Region newRegionInstance = new Region();
         newRegionInstance.setUsername(username);
         newRegionInstance.setUser(user);
@@ -60,7 +56,7 @@ public class RegionServiceImpl implements RegionService{
     @Override
     public Region findByUsername(String username){
         Region existingRegion = regionRepository.findByUsername(username);
-        regionResourceChecker.ifRegionDoesnotExistThrowException(existingRegion);
+        regionResourceChecker.ThrowExceptionIfRegionDoesnotExist(existingRegion);
         return existingRegion;
     }
 

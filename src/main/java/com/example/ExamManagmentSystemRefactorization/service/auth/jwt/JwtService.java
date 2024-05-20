@@ -1,14 +1,7 @@
 package com.example.ExamManagmentSystemRefactorization.service.auth.jwt;
 
-import com.example.ExamManagmentSystemRefactorization.entity.Region;
-import com.example.ExamManagmentSystemRefactorization.entity.User;
 import com.example.ExamManagmentSystemRefactorization.exception.CookieNotFoundException;
 import com.example.ExamManagmentSystemRefactorization.exception.TokenNotFoundException;
-import com.example.ExamManagmentSystemRefactorization.repository.UserRepository;
-import com.example.ExamManagmentSystemRefactorization.service.region.RegionService;
-import com.example.ExamManagmentSystemRefactorization.service.user.UserService;
-import com.example.ExamManagmentSystemRefactorization.util.region.RegionResourceChecker;
-import com.example.ExamManagmentSystemRefactorization.util.user.UserResourceChecker;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -22,16 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    private final UserRepository userRepository;
-    private final UserService userService;
-    private final RegionService regionService;
-    private final UserResourceChecker userResourceChecker;
-    private final RegionResourceChecker regionResourceChecker;
     @Value("${jwt.secret}")
     private String jwtSecret;
     @Value("${jwt.expiration}")

@@ -5,7 +5,6 @@ import com.example.ExamManagmentSystemRefactorization.entity.Region;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 @Component
 public class RegionMapper {
 
@@ -20,7 +19,6 @@ public class RegionMapper {
     }
 
     public List<RegionForUserDto> mapToListOfRegionForUserDto(List<Region> regions){
-        List<RegionForUserDto> r = regions.stream().map(this::mapToRegionForUserDto).toList();
-        return r;
+        return regions.stream().map(this::mapToRegionForUserDto).toList();
     }
 }
